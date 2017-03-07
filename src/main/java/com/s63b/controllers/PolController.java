@@ -1,7 +1,12 @@
 package com.s63b.controllers;
 
+import com.s63b.dao.PolDao;
+import com.s63b.domain.Pol;
 import com.s63b.domain.Result;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
+import java.util.Date;
 
 /**
  * Created by bramd on 21-2-2017.
@@ -9,10 +14,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class PolController {
 
-    @RequestMapping(path = "/pol/{id}/{lat}/{lng}", method = RequestMethod.POST)
-    public Result pol(@PathVariable String id, @PathVariable float lat, @PathVariable float lng) {
+    private PolDao polDao;
 
+    @PostConstruct
+    private void init(){
+        polDao = new PolDao();
+    }
 
-        return new Result(true, id + lat + lng, 0, "Hastikke mooi");
+    @RequestMapping(path = "/pol/{licencePlate}/{lat}/{lng}", method = RequestMethod.POST)
+    public Result pol(@PathVariable String licencePlate, @PathVariable float lat, @PathVariable float lng) {
+        String pattern = "^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<!\\d\\d-\\d\\d-)\\d\\d$|^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<![A-Z]{2}-[A-Z]{2}-)[A-Z]{2}$|^\\d\\d-[A-Z]{3}-\\d$";
+        if(!licencePlate.matches(pattern))return new Result(false, licencePlate, 1, "Lincence plate invalid.");
+
+        Pol pol = new Pol(licencePlate, lat, lng, System.currentTimeMillis());
+        if(polDao.addPol(pol)) return new Result(true, pol, 0, "Pol added");
+
+        return new Result(false, licencePlate, 1, "Something went wrong");
     }
 }
