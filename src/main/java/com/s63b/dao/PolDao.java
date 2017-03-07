@@ -28,10 +28,18 @@ public class PolDao {
     }
 
     public List<Pol> getPols(String licensePlate){
-        return em.createNamedQuery("Pol.getPolls", Pol.class).setParameter("licensePlate", licensePlate).getResultList();
+        try{
+            return em.createNamedQuery("Pol.getPolls", Pol.class).setParameter("licensePlate", licensePlate).getResultList();
+        }catch (Exception e){
+            return null;
+        }
     }
 
-    public List<Pol> getPolsBetween(String licensePlate, long min, long max){
-        return em.createNamedQuery("Pol.getPollsBetween", Pol.class).setParameter("licensePlate", licensePlate).setParameter("startDate", min).setParameter("endDate", max).getResultList();
-    }
+    public List<Pol> getPolsBetween(String licensePlate, long startDate, long endDate){
+        try{
+            return em.createNamedQuery("Pol.getPollsBetween", Pol.class).setParameter("licensePlate", licensePlate).setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
+        }catch (Exception e){
+            return null;
+        }
+     }
 }
