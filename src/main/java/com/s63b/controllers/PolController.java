@@ -6,7 +6,7 @@ import com.s63b.domain.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by bramd on 21-2-2017.
@@ -30,5 +30,10 @@ public class PolController {
         if(polDao.addPol(pol)) return new Result(true, pol, 0, "Pol added");
 
         return new Result(false, licencePlate, 1, "Something went wrong");
+    }
+
+    @RequestMapping(path = "/pols/{licencePlate}", method = RequestMethod.GET, produces = "application/json")
+    public List pol(@PathVariable String licencePlate) {
+        return polDao.getPols(licencePlate);
     }
 }

@@ -3,12 +3,12 @@ package com.s63b.dao;
 import com.s63b.domain.Pol;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.NamedQuery;
 import javax.persistence.Persistence;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by bramd on 7-3-2017.
- */
 public class PolDao {
     private EntityManager em;
 
@@ -25,5 +25,16 @@ public class PolDao {
         }catch (Exception e){
             return false;
         }
+    }
+
+    public List getPols(String licensePlate){
+        ArrayList<Pol> pols = new ArrayList<Pol>();
+        pols.add(new Pol("AAA", 50, 50, System.currentTimeMillis()));
+        pols.addAll(em.createNamedQuery("Pol.getPolls").setParameter("licensePlate", licensePlate).getResultList());
+
+//        new JSONObject();
+
+//        pols.add();
+        return pols;
     }
 }
