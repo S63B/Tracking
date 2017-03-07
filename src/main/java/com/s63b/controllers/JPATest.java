@@ -1,5 +1,6 @@
-package com.s63b;
+package com.s63b.controllers;
 
+import com.s63b.domain.Car;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

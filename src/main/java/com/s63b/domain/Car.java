@@ -1,4 +1,4 @@
-package com.s63b;
+package com.s63b.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

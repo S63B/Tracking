@@ -1,4 +1,4 @@
-package com.s63b.app;
+package com.s63b.controllers;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
