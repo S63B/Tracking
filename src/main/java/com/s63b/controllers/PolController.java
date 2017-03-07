@@ -23,8 +23,9 @@ public class PolController {
 
     @RequestMapping(path = "/pol/{licencePlate}/{lat}/{lng}", method = RequestMethod.POST)
     public Result pol(@PathVariable String licencePlate, @PathVariable float lat, @PathVariable float lng) {
+        // Check if licence plate is valid by EU standard
         String pattern = "^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<!\\d\\d-\\d\\d-)\\d\\d$|^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<![A-Z]{2}-[A-Z]{2}-)[A-Z]{2}$|^\\d\\d-[A-Z]{3}-\\d$";
-        if(!licencePlate.matches(pattern))return new Result(false, licencePlate, 1, "Lincence plate invalid.");
+        if(!licencePlate.matches(pattern)) return new Result(false, licencePlate, 1, "Lincence plate invalid.");
 
         Pol pol = new Pol(licencePlate, lat, lng, System.currentTimeMillis());
         if(polDao.addPol(pol)) return new Result(true, pol, 0, "Pol added");
