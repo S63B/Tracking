@@ -27,14 +27,7 @@ public class PolDao {
         }
     }
 
-    public List getPols(String licensePlate){
-        ArrayList<Pol> pols = new ArrayList<Pol>();
-        pols.add(new Pol("AAA", 50, 50, System.currentTimeMillis()));
-        pols.addAll(em.createNamedQuery("Pol.getPolls").setParameter("licensePlate", licensePlate).getResultList());
-
-//        new JSONObject();
-
-//        pols.add();
-        return pols;
+    public List<Pol> getPols(String licensePlate){
+        return em.createNamedQuery("Pol.getPolls", Pol.class).setParameter("licensePlate", licensePlate).getResultList();
     }
 }
