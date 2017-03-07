@@ -1,14 +1,15 @@
 package com.s63b.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 
 /**
  * Created by bramd on 7-3-2017.
  */
 @Entity
-@NamedQuery(name = "Pol.getPolls", query = "SELECT pol FROM Pol AS pol WHERE licensePlate = :licensePlate")
+@NamedQueries({
+        @NamedQuery(name = "Pol.getPolls", query = "SELECT pol FROM Pol AS pol WHERE licensePlate = :licensePlate"),
+        @NamedQuery(name = "Pol.getPollsBetween", query = "SELECT pol FROM Pol AS pol WHERE licensePlate = :licensePlate AND timestampMillis BETWEEN :startDate AND :endDate")
+})
 public class Pol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +28,24 @@ public class Pol {
         this.lng = lng;
         this.timestampMillis = timestampMillis;
     }
-    
+
+    public String getId() {
+        return id;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public float getLat() {
+        return lat;
+    }
+
+    public float getLng() {
+        return lng;
+    }
+
+    public long getTimestampMillis() {
+        return timestampMillis;
+    }
 }
