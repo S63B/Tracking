@@ -32,8 +32,8 @@ public class PolController {
         return new Result(false, licencePlate, 1, "Something went wrong");
     }
 
-    @RequestMapping(path = "/pols/{licencePlate}", method = RequestMethod.GET, produces = "application/json")
-    public List pol(@PathVariable String licencePlate) {
+    @RequestMapping(path = "/pols/{licencePlate}", method = RequestMethod.GET)
+    public List<Pol> pol(@PathVariable String licencePlate) {
         return polDao.getPols(licencePlate);
     }
 }
