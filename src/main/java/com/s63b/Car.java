@@ -1,5 +1,6 @@
 package com.s63b;
 
+<<<<<<< HEAD
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,4 +31,7 @@ public class Car {
     public void setLicensePlate(String licensePlate){
         this.licensePlate = licensePlate;
     }
+=======
+public class Car {
+>>>>>>> ae2a361478416de017a67c2bc3c736e2efc2a219
 }
