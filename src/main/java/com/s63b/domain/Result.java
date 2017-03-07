@@ -1,4 +1,4 @@
-package com.s63b;
+package com.s63b.domain;
 
 /**
  * Created by bramd on 21-2-2017.
