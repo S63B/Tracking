@@ -30,4 +30,8 @@ public class PolDao {
     public List<Pol> getPols(String licensePlate){
         return em.createNamedQuery("Pol.getPolls", Pol.class).setParameter("licensePlate", licensePlate).getResultList();
     }
+
+    public List<Pol> getPolsBetween(String licensePlate, long min, long max){
+        return em.createNamedQuery("Pol.getPollsBetween", Pol.class).setParameter("licensePlate", licensePlate).setParameter("startDate", min).setParameter("endDate", max).getResultList();
+    }
 }

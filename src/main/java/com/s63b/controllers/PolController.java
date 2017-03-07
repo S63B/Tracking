@@ -34,7 +34,20 @@ public class PolController {
     }
 
     @RequestMapping(path = "/pols/{licencePlate}", method = RequestMethod.GET)
-    public List<Pol> pol(@PathVariable String licencePlate) {
-        return polDao.getPols(licencePlate);
+    public Result pol(@PathVariable String licencePlate) {
+        try{
+            return new Result(true,  polDao.getPols(licencePlate), 0, "OK");
+        }catch (Exception ex){
+            return new Result(false, null, 1, "Something went wrong");
+        }
+    }
+
+    @RequestMapping(path = "/pols/{licencePlate}/{startDate}/{endDate}", method = RequestMethod.GET)
+    public Result pol(@PathVariable String licencePlate, @PathVariable long startDate, @PathVariable long endDate) {
+        try{
+            return new Result(true, polDao.getPolsBetween(licencePlate, startDate, endDate), 0, "OK");
+        }catch(Exception ex){
+            return new Result(false, null, 1, "Something went wrong");
+        }
     }
 }
