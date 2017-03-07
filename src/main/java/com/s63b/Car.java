@@ -1,6 +1,5 @@
 package com.s63b;
 
-<<<<<<< HEAD
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +11,8 @@ public class Car {
     private String id;
     private String licensePlate;
 
-    public Car(){}
+    public Car() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +24,11 @@ public class Car {
         this.id = id;
     }
 
-    public String getLicensePlate(){
+    public String getLicensePlate() {
         return this.licensePlate;
     }
 
-    public void setLicensePlate(String licensePlate){
+    public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
-=======
-public class Car {
->>>>>>> ae2a361478416de017a67c2bc3c736e2efc2a219
 }
