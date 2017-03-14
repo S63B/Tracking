@@ -30,7 +30,7 @@ public class PolController {
         polDao = new PolDao();
     }
 
-    @RequestMapping(path = "/pol/{licencePlate}/{lat}/{lng}", method = RequestMethod.POST)
+    @RequestMapping(path = "/pol/{licencePlate}/{lat}/{lng}/", method = RequestMethod.POST)
     public Result pol(@PathVariable String licencePlate, @PathVariable float lat, @PathVariable float lng) {
         // Check if licence plate is valid by EU standard
         String pattern = "^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<!\\d\\d-\\d\\d-)\\d\\d$|^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<![A-Z]{2}-[A-Z]{2}-)[A-Z]{2}$|^\\d\\d-[A-Z]{3}-\\d$";
