@@ -3,6 +3,7 @@ package com.s63b.dao;
 import com.s63b.domain.Pol;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Persistence;
 import java.lang.reflect.Array;
@@ -23,6 +24,19 @@ public class PolDao {
             em.getTransaction().commit();
             return true;
         }catch (Exception e){
+            System.out.println("Error: " + e);
+            return false;
+        }
+    }
+
+    public boolean removePols(String licensePlate){
+        try{
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Pol p WHERE p.licensePlate = :licensePlate").setParameter("licensePlate", licensePlate).executeUpdate();
+            em.getTransaction().commit();
+            return true;
+        }catch (Exception e){
+            System.out.println("Error: " + e);
             return false;
         }
     }

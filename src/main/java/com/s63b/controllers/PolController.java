@@ -43,8 +43,8 @@ public class PolController {
      */
     @RequestMapping(value = "/pol", method = RequestMethod.POST)
     public Response addPol(@RequestParam(value="licence_plate", required=true) String licencePlate,
-                        @RequestParam(value="lat", required=true) float lat,
-                        @RequestParam(value="lng", required=true) float lng) {
+                        @RequestParam(value="lat", required=true) double lat,
+                        @RequestParam(value="lng", required=true) double lng) {
         // Check if licence plate is valid by Dutch standard
         String pattern = "^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<!\\d\\d-\\d\\d-)\\d\\d$|^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<![A-Z]{2}-[A-Z]{2}-)[A-Z]{2}$|^\\d\\d-[A-Z]{3}-\\d$";
         if(!licencePlate.matches(pattern))
@@ -55,7 +55,7 @@ public class PolController {
         if(polDao.addPol(pol))
             return Response.status(OK).entity(pol).build();
 
-        return Response.status(REQUEST_TIMEOUT).entity("Somethign went wrong.").build();
+        return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();
     }
 
     /**

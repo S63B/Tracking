@@ -16,13 +16,13 @@ public class Pol {
     private String id;
 
     private String licensePlate;
-    private float lat;
-    private float lng;
+    private double lat;
+    private double lng;
     private long timestampMillis;
 
     public Pol() {}
 
-    public Pol(String licensePlate, float lat, float lng, long timestampMillis) {
+    public Pol(String licensePlate, double lat, double lng, long timestampMillis) {
         this.licensePlate = licensePlate;
         this.lat = lat;
         this.lng = lng;
@@ -37,11 +37,11 @@ public class Pol {
         return licensePlate;
     }
 
-    public float getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public float getLng() {
+    public double getLng() {
         return lng;
     }
 
