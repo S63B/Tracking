@@ -42,9 +42,9 @@ public class PolController {
      * @return The added pol if successful else the error message.
      */
     @RequestMapping(value = "/pol", method = RequestMethod.POST)
-    public Response addPol(@RequestParam(value="licence_plate", required=true) String licencePlate,
-                        @RequestParam(value="lat", required=true) double lat,
-                        @RequestParam(value="lng", required=true) double lng) {
+    public Response addPol(@RequestParam(value="licence_plate") String licencePlate,
+                        @RequestParam(value="lat") double lat,
+                        @RequestParam(value="lng") double lng) {
         // Check if licence plate is valid by Dutch standard
         String pattern = "^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<!\\d\\d-\\d\\d-)\\d\\d$|^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<![A-Z]{2}-[A-Z]{2}-)[A-Z]{2}$|^\\d\\d-[A-Z]{3}-\\d$";
         if(!licencePlate.matches(pattern))
@@ -65,12 +65,12 @@ public class PolController {
      * @return List of polls if successful else the error message.
      */
     @RequestMapping(value = "/pols", method = RequestMethod.GET)
-    public Response getPolls(@RequestParam(value="licence_plate", required=true) String licencePlate) {
+    public Response getPolls(@RequestParam(value="licence_plate") String licencePlate) {
         GenericEntity<List<Pol>> pols = new GenericEntity<List<Pol>> (polDao.getPols(licencePlate)) {};
-        if(pols != null)
+//        if(pols != null)
             return Response.status(OK).entity(pols).build();
 
-        return Response.status(REQUEST_TIMEOUT).entity("Somethign went wrong.").build();
+//        return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();
     }
 
     /**
@@ -82,9 +82,9 @@ public class PolController {
      * @return List of polls if successful else the error message.
      */
     @RequestMapping(value = "/distance", method = RequestMethod.GET)
-    public Response getDrivenDistance(@RequestParam(value="licence_plate", required=true) String licencePlate,
-                        @RequestParam(value="start_date", required=true) long startDate,
-                        @RequestParam(value="end_date", required=true) long endDate) {
+    public Response getDrivenDistance(@RequestParam(value="licence_plate") String licencePlate,
+                        @RequestParam(value="start_date") long startDate,
+                        @RequestParam(value="end_date") long endDate) {
         List<Pol> pols = polDao.getPolsBetween(licencePlate, startDate, endDate);
         if(pols != null){
             long meters = 0;
@@ -106,6 +106,6 @@ public class PolController {
             }
             return Response.status(OK).entity(meters).build();
         }
-        return Response.status(REQUEST_TIMEOUT).entity("Somethign went wrong.").build();
+        return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();
     }
 }
