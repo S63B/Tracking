@@ -55,8 +55,8 @@ public class PolControllerTest extends ExtendedRestTestCase {
         assertEquals(lng2, "" + pol2.getLng());
         assertNotNull(timestamp2 = pol2.getTimestampMillis());
 
-        String l = (String) httpRequest("distance?license_plate=" + licensePlate + "&start_date=" + (timestamp - 1) + "&end_date=" + (timestamp2 + 1), Pol.class, RequestMethod.GET);
+        String testResult = (String) httpRequest("distance?license_plate=" + licensePlate + "&start_date=" + (timestamp - 1) + "&end_date=" + (timestamp2 + 1), Pol.class, RequestMethod.GET);
 
-        assertTrue(1632849 == Long.parseLong(l));
+        assertTrue(1632849 == Long.parseLong(testResult));
     }
 }

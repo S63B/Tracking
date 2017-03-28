@@ -8,7 +8,6 @@ import com.google.maps.model.TransitRoutingPreference;
 import com.google.maps.model.TravelMode;
 import com.s63b.dao.PolDao;
 import com.s63b.domain.Pol;
-import com.s63b.domain.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
