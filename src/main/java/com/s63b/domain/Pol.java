@@ -2,9 +2,6 @@ package com.s63b.domain;
 
 import javax.persistence.*;
 
-/**
- * Created by bramd on 7-3-2017.
- */
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Pol.getPolls", query = "SELECT pol FROM Pol AS pol WHERE licensePlate = :licensePlate"),

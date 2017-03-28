@@ -1,8 +1,5 @@
 package com.s63b.domain;
 
-/**
- * Created by bramd on 21-2-2017.
- */
 public class Result {
     private Boolean success;
     private Object data;
