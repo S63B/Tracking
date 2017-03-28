@@ -43,9 +43,9 @@ public class PolController {
                            @RequestParam(value="lat") double lat,
                            @RequestParam(value="lng") double lng) {
         // Check if license plate is valid by Dutch standard
-        String pattern = "^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<!\\d\\d-\\d\\d-)\\d\\d$|^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<![A-Z]{2}-[A-Z]{2}-)[A-Z]{2}$|^\\d\\d-[A-Z]{3}-\\d$";
-        if(!licensePlate.matches(pattern))
-            return Response.status(BAD_REQUEST).entity("License plate invalid.").build();
+//        String pattern = "^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<!\\d\\d-\\d\\d-)\\d\\d$|^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<![A-Z]{2}-[A-Z]{2}-)[A-Z]{2}$|^\\d\\d-[A-Z]{3}-\\d$";
+//        if(!licensePlate.matches(pattern))
+//            return Response.status(BAD_REQUEST).entity("License plate invalid.").build();
 
         // Add poll to database
         Pol pol = new Pol(licensePlate, lat, lng, System.currentTimeMillis());
