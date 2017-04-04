@@ -23,9 +23,18 @@
 //        String licensePlate = "25-GGA-3";
 //        String lat = "51.4505821";
 //        String lng = "5.4686695";
-//        long timestamp;
+//        long timestamp = System.currentTimeMillis();
 //
-//        Pol pol = (Pol) httpRequest("pol?license_plate=" + licensePlate + "&lat=" + lat + "&lng=" + lng, Pol.class, RequestMethod.POST);
+//        Pol pol = null;
+//        Object o = null;
+//        try{
+//            o = httpRequest("pol?license_plate=" + licensePlate + "&lat=" + lat + "&lng=" + lng + "&timestamp=" + timestamp, Pol.class, RequestMethod.POST);
+//            pol = (Pol) o;
+//        }catch (ClassCastException e){
+//            fail("Error: " + o);
+//            return;
+//        }
+//
 //        assertEquals(licensePlate, pol.getLicensePlate());
 //        assertEquals(lat, "" + pol.getLat());
 //        assertEquals(lng, "" + pol.getLng());
@@ -48,7 +57,7 @@
 //        String lng2 = "15.4618665";
 //        long timestamp2;
 //
-//        Pol pol2 = (Pol) httpRequest("pol?license_plate=" + licensePlate + "&lat=" + lat2 + "&lng=" + lng2, Pol.class, RequestMethod.POST);
+//        Pol pol2 = (Pol) httpRequest("pol?license_plate=" + licensePlate + "&lat=" + lat2 + "&lng=" + lng2 + "&timestamp=" + System.currentTimeMillis(), Pol.class, RequestMethod.POST);
 //
 //        assertEquals(licensePlate, pol2.getLicensePlate());
 //        assertEquals(lat2, "" + pol2.getLat());
