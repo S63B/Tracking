@@ -41,14 +41,15 @@ public class PolController {
     @RequestMapping(value = "/pol", method = RequestMethod.POST)
     public Response addPol(@RequestParam(value="license_plate") String licensePlate,
                            @RequestParam(value="lat") double lat,
-                           @RequestParam(value="lng") double lng) {
+                           @RequestParam(value="lng") double lng,
+                           @RequestParam(value="timestamp") long timestamp) {
         // Check if license plate is valid by Dutch standard
 //        String pattern = "^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<!\\d\\d-\\d\\d-)\\d\\d$|^(?>[A-Z]{2}|\\d\\d)-(?>[A-Z]{2}|\\d\\d)-(?<![A-Z]{2}-[A-Z]{2}-)[A-Z]{2}$|^\\d\\d-[A-Z]{3}-\\d$";
 //        if(!licensePlate.matches(pattern))
 //            return Response.status(BAD_REQUEST).entity("License plate invalid.").build();
 
         // Add poll to database
-        Pol pol = new Pol(licensePlate, lat, lng, System.currentTimeMillis());
+        Pol pol = new Pol(licensePlate, lat, lng, timestamp);
         if(polDao.addPol(pol))
             return Response.status(OK).entity(pol).build();
 
