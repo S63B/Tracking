@@ -7,7 +7,7 @@ import javax.persistence.*;
         @NamedQuery(name = "Pol.getPolls", query = "SELECT pol FROM Pol AS pol WHERE licensePlate = :licensePlate"),
         @NamedQuery(name = "Pol.getPollsBetween", query = "SELECT pol FROM Pol AS pol WHERE licensePlate = :licensePlate AND timestampMillis BETWEEN :startDate AND :endDate")
 })
-public class Pol {
+public class Pol implements Comparable<Pol> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
@@ -44,5 +44,10 @@ public class Pol {
 
     public long getTimestampMillis() {
         return timestampMillis;
+    }
+
+    @Override
+    public int compareTo(Pol o) {
+        return (int) (this.getTimestampMillis() - o.getTimestampMillis());
     }
 }

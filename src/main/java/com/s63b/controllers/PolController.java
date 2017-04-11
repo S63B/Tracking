@@ -8,12 +8,14 @@ import com.google.maps.model.TransitRoutingPreference;
 import com.google.maps.model.TravelMode;
 import com.s63b.dao.PolDao;
 import com.s63b.domain.Pol;
+import com.s63b.domain.Ride;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.OK;
@@ -69,6 +71,32 @@ public class PolController {
         return Response.status(OK).entity(pols).build();
 
 //        return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();
+    }
+
+    @RequestMapping(value = "/rides", method = RequestMethod.GET)
+    public Response getRides(@RequestParam(value="license_plate") String licensePlate) {
+        Response pols = this.getPolls(licensePlate);
+        List<Pol> actualPols = (List<Pol>) pols.getEntity();
+
+        Collections.sort(actualPols);
+
+        List<Ride> rides = new ArrayList<>();
+        Pol lastPol = null;
+        Ride currentRide = new Ride();
+
+        for (Pol pol : actualPols){
+            if (!(lastPol == null || pol.getTimestampMillis() - lastPol.getTimestampMillis() < 300000)){
+                rides.add(currentRide);
+                currentRide = new Ride();
+            }
+
+            currentRide.addPol(pol);
+            lastPol = pol;
+        }
+
+        rides.add(currentRide);
+
+        return Response.status(OK).entity(rides).build();
     }
 
     /**

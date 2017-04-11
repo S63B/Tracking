@@ -11,7 +11,7 @@
 
     <properties>
         <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://192.168.24.15:5432/postgres" />
+        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://192.168.24.125:5432/postgres" />
         <property name="javax.persistence.jdbc.user" value="s63b" />
         <property name="javax.persistence.jdbc.password" value="abcd12" />
 
