@@ -1,10 +1,8 @@
 package com.s63b.controllers;
 
 import com.google.maps.*;
-import com.google.maps.errors.ApiException;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.LatLng;
-import com.google.maps.model.TransitRoutingPreference;
 import com.google.maps.model.TravelMode;
 import com.s63b.dao.PolDao;
 import com.s63b.domain.Pol;
@@ -19,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.OK;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.REQUEST_TIMEOUT;
 
 @RestController
@@ -74,18 +71,20 @@ public class PolController {
     }
 
     @RequestMapping(value = "/rides", method = RequestMethod.GET)
-    public Response getRides(@RequestParam(value="license_plate") String licensePlate) {
-        Response pols = this.getPolls(licensePlate);
-        List<Pol> actualPols = (List<Pol>) pols.getEntity();
+    public Response getRides(@RequestParam(value="license_plate") String licensePlate,
+                             @RequestParam(value="start_date") long startDate,
+                             @RequestParam(value="end_date") long endDate) {
+        List<Pol> pols = polDao.getPolsBetween(licensePlate, startDate, endDate);
 
-        Collections.sort(actualPols);
+        Collections.sort(pols);
 
         List<Ride> rides = new ArrayList<>();
         Pol lastPol = null;
         Ride currentRide = new Ride();
 
-        for (Pol pol : actualPols){
+        for (Pol pol : pols){
             if (!(lastPol == null || pol.getTimestampMillis() - lastPol.getTimestampMillis() < 300000)){
+                currentRide = updateRide(currentRide, licensePlate);
                 rides.add(currentRide);
                 currentRide = new Ride();
             }
@@ -94,6 +93,7 @@ public class PolController {
             lastPol = pol;
         }
 
+        currentRide = updateRide(currentRide, licensePlate);
         rides.add(currentRide);
 
         return Response.status(OK).entity(rides).build();
@@ -133,5 +133,16 @@ public class PolController {
             return Response.status(OK).entity(meters).build();
         }
         return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();
+    }
+
+    public Ride updateRide(Ride ride, String licensePlate){
+        if (ride.getPols().size() >= 1){
+            ride.setStartDate(ride.getPols().get(0).getTimestampMillis());
+            ride.setEndDate(ride.getPols().get(ride.getPols().size() - 1).getTimestampMillis());
+        }
+
+        ride.setDistance((long) this.getDrivenDistance(licensePlate, ride.getStartDate() - 1, ride.getEndDate() + 1).getEntity());
+
+        return ride;
     }
 }
