@@ -1,6 +1,6 @@
 package com.s63b.dao;
 
-import com.S63B.domain.Pol;
+import com.S63B.domain.Entities.Pol;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -20,36 +20,35 @@ public class PolDao {
             em.getTransaction().commit();
             return true;
         }catch (Exception e){
-            System.out.println("Error: " + e);
+            e.printStackTrace();
             return false;
         }
     }
 
-    public boolean removePols(String licensePlate){
+    public boolean deletePols(int trackerID){
         try{
-            em.getTransaction().begin();
-            em.createQuery("DELETE FROM Pol p WHERE p.licensePlate = :licensePlate").setParameter("licensePlate", licensePlate).executeUpdate();
-            em.getTransaction().commit();
+            em.createNamedQuery("Pol.deletePolls", Pol.class).setParameter("trackerID", trackerID);
             return true;
         }catch (Exception e){
-            System.out.println("Error: " + e);
+            e.printStackTrace();
             return false;
         }
     }
 
-    public List<Pol> getPols(String licensePlate){
+    public List<Pol> getPols(int trackerID){
         try{
-            return em.createNamedQuery("Pol.getPolls", Pol.class).setParameter("licensePlate", licensePlate).getResultList();
+            return em.createNamedQuery("Pol.getPolls", Pol.class).setParameter("trackerID", trackerID).getResultList();
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<Pol> getPolsBetween(String licensePlate, long startDate, long endDate){
+    public List<Pol> getPolsBetween(int trackerID, long startDate, long endDate){
         try{
-            return em.createNamedQuery("Pol.getPollsBetween", Pol.class).setParameter("licensePlate", licensePlate).setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
+            return em.createNamedQuery("Pol.getPollsBetween", Pol.class).setParameter("trackerID", trackerID).setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
      }

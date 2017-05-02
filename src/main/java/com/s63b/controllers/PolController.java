@@ -1,12 +1,14 @@
 package com.s63b.controllers;
 
-import com.S63B.domain.Pol;
+import com.S63B.domain.Entities.Pol;
+import com.S63B.domain.Entities.Tracker;
 import com.S63B.domain.Ride;
 import com.google.maps.*;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 import com.s63b.dao.PolDao;
+import com.s63b.dao.TrackerDao;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -23,22 +25,24 @@ import static javax.ws.rs.core.Response.Status.REQUEST_TIMEOUT;
 public class PolController {
 
     private PolDao polDao;
+    private TrackerDao trackerDao;
 
     @PostConstruct
     private void init(){
         polDao = new PolDao();
+        trackerDao = new TrackerDao();
     }
 
     /**
      * Add pol
      * Sample request: POST http://localhost:8080/pol?license_plate=25-GGG-3&lat=51.4505821&lng=5.4686695
-     * @param licensePlate
+     * @param trackerID
      * @param lat
      * @param lng
      * @return The added pol if successful else the error message.
      */
     @RequestMapping(value = "/pol", method = RequestMethod.POST)
-    public Response addPol(@RequestParam(value="license_plate") String licensePlate,
+    public Response addPol(@RequestParam(value="trackerID") int trackerID,
                            @RequestParam(value="lat") double lat,
                            @RequestParam(value="lng") double lng,
                            @RequestParam(value="timestamp") long timestamp) {
@@ -47,8 +51,16 @@ public class PolController {
 //        if(!licensePlate.matches(pattern))
 //            return Response.status(BAD_REQUEST).entity("License plate invalid.").build();
 
+        Tracker tracker = trackerDao.getTracker(trackerID);
+
+        if (tracker == null){
+            if (!trackerDao.createTracker(tracker = new Tracker())){
+                return Response.status(REQUEST_TIMEOUT).entity("Failed to resolve / create tracker.").build();
+            }
+        }
+
         // Add poll to database
-        Pol pol = new Pol(licensePlate, lat, lng, timestamp);
+        Pol pol = new Pol(tracker, lat, lng, timestamp);
         if(polDao.addPol(pol))
             return Response.status(OK).entity(pol).build();
 
@@ -58,12 +70,12 @@ public class PolController {
     /**
      * Get polls of license plate.
      * Sample request: GET http://localhost:8080/pols?license_plate=25-PPP-3
-     * @param licensePlate
+     * @param trackerID
      * @return List of polls if successful else the error message.
      */
     @RequestMapping(value = "/pols", method = RequestMethod.GET)
-    public Response getPolls(@RequestParam(value="license_plate") String licensePlate) {
-        GenericEntity<List<Pol>> pols = new GenericEntity<List<Pol>> (polDao.getPols(licensePlate)) {};
+    public Response getPolls(@RequestParam(value="trackerID") int trackerID) {
+        GenericEntity<List<Pol>> pols = new GenericEntity<List<Pol>>(polDao.getPols(trackerID)) {};
 //        if(pols != null)
         return Response.status(OK).entity(pols).build();
 
@@ -71,10 +83,10 @@ public class PolController {
     }
 
     @RequestMapping(value = "/rides", method = RequestMethod.GET)
-    public Response getRides(@RequestParam(value="license_plate") String licensePlate,
+    public Response getRides(@RequestParam(value="trackerID") int trackerID,
                              @RequestParam(value="start_date") long startDate,
                              @RequestParam(value="end_date") long endDate) {
-        List<Pol> pols = polDao.getPolsBetween(licensePlate, startDate, endDate);
+        List<Pol> pols = polDao.getPolsBetween(trackerID, startDate, endDate);
 
         Collections.sort(pols);
 
@@ -84,7 +96,7 @@ public class PolController {
 
         for (Pol pol : pols){
             if (!(lastPol == null || pol.getTimestampMillis() - lastPol.getTimestampMillis() < 300000)){
-                currentRide = updateRide(currentRide, licensePlate);
+                currentRide = updateRide(currentRide, trackerID);
                 rides.add(currentRide);
                 currentRide = new Ride();
             }
@@ -93,7 +105,7 @@ public class PolController {
             lastPol = pol;
         }
 
-        currentRide = updateRide(currentRide, licensePlate);
+        currentRide = updateRide(currentRide, trackerID);
         rides.add(currentRide);
 
         return Response.status(OK).entity(rides).build();
@@ -102,16 +114,16 @@ public class PolController {
     /**
      * Get driven distance between time range of licenseplate.
      * Sample request: GET http://localhost:8080/distance?license_plate=25-PPP-3&start_date=1480000073366&end_date=1490090073366
-     * @param licensePlate
+     * @param trackerID
      * @param startDate
      * @param endDate
      * @return List of polls if successful else the error message.
      */
     @RequestMapping(value = "/distance", method = RequestMethod.GET)
-    public Response getDrivenDistance(@RequestParam(value="license_plate") String licensePlate,
+    public Response getDrivenDistance(@RequestParam(value="trackerID") int trackerID,
                                       @RequestParam(value="start_date") long startDate,
                                       @RequestParam(value="end_date") long endDate) {
-        List<Pol> pols = polDao.getPolsBetween(licensePlate, startDate, endDate);
+        List<Pol> pols = polDao.getPolsBetween(trackerID, startDate, endDate);
         if(pols != null){
             long meters = 0;
 
@@ -135,13 +147,13 @@ public class PolController {
         return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();
     }
 
-    public Ride updateRide(Ride ride, String licensePlate){
+    public Ride updateRide(Ride ride, int trackerID){
         if (ride.getPols().size() >= 1){
             ride.setStartDate(ride.getPols().get(0).getTimestampMillis());
             ride.setEndDate(ride.getPols().get(ride.getPols().size() - 1).getTimestampMillis());
         }
 
-        ride.setDistance((long) this.getDrivenDistance(licensePlate, ride.getStartDate() - 1, ride.getEndDate() + 1).getEntity());
+        ride.setDistance((long) this.getDrivenDistance(trackerID, ride.getStartDate() - 1, ride.getEndDate() + 1).getEntity());
 
         return ride;
     }
