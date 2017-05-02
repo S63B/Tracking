@@ -1,13 +1,9 @@
 package com.s63b.dao;
 
-import com.s63b.domain.Pol;
+import com.S63B.domain.Pol;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Persistence;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PolDao {
@@ -45,6 +41,7 @@ public class PolDao {
         try{
             return em.createNamedQuery("Pol.getPolls", Pol.class).setParameter("licensePlate", licensePlate).getResultList();
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }

@@ -25,7 +25,19 @@
 		<docker.image.prefix>ptss63b</docker.image.prefix>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
+		<dependency>
+			<groupId>com.github.S63B</groupId>
+			<artifactId>Domain</artifactId>
+			<version>44ff5f688d</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>

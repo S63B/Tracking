@@ -1,12 +1,12 @@
 package com.s63b.controllers;
 
+import com.S63B.domain.Pol;
+import com.S63B.domain.Ride;
 import com.google.maps.*;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 import com.s63b.dao.PolDao;
-import com.s63b.domain.Pol;
-import com.s63b.domain.Ride;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
