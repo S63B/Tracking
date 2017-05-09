@@ -129,7 +129,15 @@ public class PolController {
         currentRide = updateRide(currentRide, licensePlate);
         rides.add(currentRide);
 
-        return Response.status(OK).entity(rides).build();
+        List<Ride> ridez = new ArrayList<>();
+
+        for (Ride ride : rides){
+            if (ride.getPols().size() > 1){
+                ridez.add(ride);
+            }
+        }
+
+        return Response.status(OK).entity(ridez).build();
     }
 
     /**
