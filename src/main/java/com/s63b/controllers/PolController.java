@@ -28,6 +28,7 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.REQUEST_TIMEOUT;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class PolController {
 
     private PolDao polDao;
