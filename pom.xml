@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>com.github.S63B</groupId>
 			<artifactId>Domain</artifactId>
-			<version>3a2969dd4f</version>
+			<version>3ec1942834</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
