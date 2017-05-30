@@ -27,7 +27,7 @@ public class CarDao extends BaseDao<Car> {
         try {
             Query query = em.createQuery("SELECT c FROM Car c");
             cars =  query.getResultList();
-            return cars.stream().filter(car -> car.isStolen() == true)
+            return cars.stream().filter(car -> car.isStolen())
                     .collect(Collectors.toList());
         }catch(NoResultException e){
             // No result is acceptable, object is null.
