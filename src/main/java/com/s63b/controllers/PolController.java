@@ -206,4 +206,19 @@ public class PolController {
 
         return ride;
     }
+
+    /**
+     * Returns a list of stolen cars.
+     * Sample request: GET http://localhost:8080/stolen_cars
+     * @return List of stolen cars if successful else the error message.
+     */
+    @RequestMapping(value = "/stolen_cars", method = RequestMethod.GET)
+    public Response getStolenCars(){
+        GenericEntity<List<Car>> cars = new GenericEntity<List<Car>>(carDao.getStolenCars()) {};
+
+        if(cars!=null){
+            return Response.status(OK).entity(cars).build();
+        }
+        return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();
+    }
 }
