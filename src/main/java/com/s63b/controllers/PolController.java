@@ -67,7 +67,7 @@ public class PolController {
 
         if (car == null){
             LicensePlate plate = new LicensePlate(licensePlate, new DateTime());
-            Tracker tracker = new Tracker(null, null);
+            Tracker tracker = new Tracker(null, "NETHERLANDS");
 
             licensePlateDao.create(plate);
             trackerDao.create(tracker);
