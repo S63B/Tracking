@@ -24,10 +24,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.REQUEST_TIMEOUT;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class PolController {
 
     private PolDao polDao;
@@ -65,7 +67,7 @@ public class PolController {
 
         if (car == null){
             LicensePlate plate = new LicensePlate(licensePlate, new DateTime());
-            Tracker tracker = new Tracker(null, null);
+            Tracker tracker = new Tracker(null, "NETHERLANDS");
 
             licensePlateDao.create(plate);
             trackerDao.create(tracker);
@@ -101,6 +103,24 @@ public class PolController {
         return Response.status(OK).entity(pols).build();
 
 //        return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();
+    }
+
+    /**
+     * Gets the last poll of a license plate
+     * Sample request: GET http://localhost:8080/last_poll?license_plate=25-PPP-3
+     * @param licensePlate
+     * @return The last poll if successful else the error message
+     */
+    @RequestMapping(value = "/last_poll", method = RequestMethod.GET)
+    public Response getLastPoll(@RequestParam(value="license_plate") String licensePlate) {
+        List<Pol> pols = polDao.getPols(licensePlate);
+
+        if(pols.isEmpty()){
+            return Response.status(BAD_REQUEST).entity("No polls available").build();
+        }
+
+        Pol lastPol = pols.get(pols.size()-1);
+        return Response.status(OK).entity(lastPol).build();
     }
 
     @RequestMapping(value = "/rides", method = RequestMethod.GET)
