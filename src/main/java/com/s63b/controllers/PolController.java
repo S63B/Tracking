@@ -202,7 +202,8 @@ public class PolController {
             ride.setEndDate(ride.getPols().get(ride.getPols().size() - 1).getTimestampMillis());
         }
 
-        ride.setDistance((long) this.getDrivenDistance(licensePlate, ride.getStartDate() - 1, ride.getEndDate() + 1).getEntity());
+//        ride.setDistance((long) this.getDrivenDistance(licensePlate, ride.getStartDate() - 1, ride.getEndDate() + 1).getEntity());
+        ride.setDistance(0);
 
         return ride;
     }
